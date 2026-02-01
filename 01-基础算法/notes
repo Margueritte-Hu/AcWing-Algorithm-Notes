@@ -1,1 +1,45 @@
-
+（1）快速排序  调整区间再递归
+	/*快排思路（分治 不稳定）： 
+	1.确定分界点
+	2.调整区间
+	3.递归左右俩段 */  
+	#include<iostream>
+	const int N = 100010; 	
+	int n;
+	int q[N];
+	void swap(int* a, int* b) {
+	    int temp = *a;
+	    *a = *b;
+	    *b = temp;
+	}
+	void QuickSort(int q[],int l,int r){
+	        if(l >= r ) return;
+	        //1.确定分界点 
+	        int x = q[l],i = l - 1, j = r + 1;//i,j 先位于边界的左右两侧
+	        //2.调整区间 
+	        while(i < j){//导致循环条件永远不会改变，程序陷入无限循环
+	                do i++; while(q[i] < x);
+	                do j--; while( q[j] > x);
+	                if(i < j) swap(&q[i], &q[j]);//有些系统没有swap函数
+	        }
+	        //3.递归
+	        QuickSort(q,l,j);
+	        QuickSort(q, j+1 ,r);
+	        //不能将i替换j的原因：有边界问题，将x = q[r];
+	        //同理 取j时，x=q[l];
+	}
+	
+	int main(){
+	        scanf("%d",&n);//长度为n的整数数列
+	        //输入需要排列的数列
+	        for(int i = 0; i < n; i ++){
+	                scanf("%d",&q[i]);//错误：缺少取地址符 &
+	        }	 
+	        QuickSort(q,0,n-1);
+	        //输出排序的数列
+	        for(int i = 0; i < n; i ++){
+	                printf("%d",q[i]);
+	        }
+	        return 0; 
+	} 
+//C++ 的cin读取整数时，是按空白符（空格 / 回车 / Tab） 分隔的。如果输入时元素之间没有空格，cin会把所有数字当成一个整体读取
